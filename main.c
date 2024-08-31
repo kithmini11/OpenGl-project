@@ -30,6 +30,21 @@ float tailDirection = 1.0;
 float fishFinAngle = 0.0;
 float fishFinDirection = 1.0;
 
+float boatPosition = 0.0;
+bool boatMoving = false;
+
+float horsePosition = 0.0;
+bool horseMoving = false;
+
+float fishPosition = 0.0;
+bool fishMoving = false;
+
+float flowerpot2Scale = 1.0;
+float fish2Scale = 1.0;
+float fruittreeScale = 1.0;
+float sunX = 0.8;
+
+
 GLuint texture;
 void LoadTexture(const char* filename) {
     int width, height, nrChannels;
@@ -51,18 +66,11 @@ void LoadTexture(const char* filename) {
     }
 }
 
-float boatPosition = 0.0;
-bool boatMoving = false;
-
-float horsePosition = 0.0;
-bool horseMoving = false;
-
-float fishPosition = 0.0;
-bool fishMoving = false;
-
 void sun(){
-    glColor3f(1.0, 0.5, 0.0);
-    drawCircle(0.8,0.8,0.1,40,1.0,0.647,0.0);
+    glPushMatrix();
+    glTranslatef(sunX, 0.0, 0.0);
+    drawCircle(0.05,0.7,0.1,80,1.0,0.5,0.0);
+    glPopMatrix();
 }
 
 void drawCircle(float cx, float cy, float r, int num_segments,float CircleR, float CircleG,float CircleB) {
@@ -94,6 +102,7 @@ void drawEllipse(float cx, float cy, float rx, float ry, int num_segments, float
 
 void flowerpot2() {
     glPushMatrix();
+    glScalef(flowerpot2Scale, flowerpot2Scale, 1.0);
 
     glColor3f(1.0, 1.0, 0.941);
     drawEllipse(0.85, -0.45, 0.07, 0.025, 100, 0.9, 0.4, 0.1);
@@ -165,6 +174,7 @@ void fish2(){
 
     glPushMatrix();
     glTranslatef(fishPosition, 0.0, 0.0);
+    glScalef(fish2Scale, fish2Scale, 1.0);
 
     glColor3f(1.0, 1.0, 0.0); // fish
     glBegin(GL_QUADS);
@@ -492,7 +502,9 @@ drawCircle(-0.78,-0.30,0.02,20,1.0,0.0,0.0);
 
 void fruitTree(){
 
+    glPushMatrix();
     glLineWidth(5.0);
+    glScalef(fruittreeScale, fruittreeScale, 1.0);
 
     glColor3f(0.0, 0.39, 0.0); //leaves of the fruit tree
     glBegin(GL_POLYGON);
@@ -547,6 +559,7 @@ void fruitTree(){
 
     drawCircle(-0.045, 0.1, 0.02, 20, 1.0, 0.0, 0.0); // Right fruit
     drawCircle(-0.15, 0.1, 0.02, 20, 1.0, 0.0, 0.0);  // Left fruit
+    glPopMatrix();
 
 }
 
@@ -767,6 +780,22 @@ void keyboard(unsigned char key, int x, int y) {
     case 'f':
         fishMoving = false;
         break;
+    case 'p':
+        flowerpot2Scale *= 1.5;
+        fish2Scale *= 1.5;
+        glutPostRedisplay();
+        break;
+    case 'k':
+        fruittreeScale *= 0.95;
+        flowerpot2Scale *= 0.95;
+        glutPostRedisplay();
+        break;
+
+    case ' ':
+        sunX -= 0.2;
+        flowerpot2Scale *= 0.95;
+        glutPostRedisplay();
+        break;
    }
 }
 
@@ -833,4 +862,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
